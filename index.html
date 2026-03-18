@@ -476,11 +476,12 @@
     <div class="modal-overlay" id="passwordModal">
         <div class="modal-content">
             <div style="font-size: 3rem; margin-bottom: 16px;">🔐</div>
-            <div class="modal-title">请输入访问密码</div>
-            <div class="modal-desc">此记账工具受密码保护<br>请输入密码查看和编辑账目</div>
-            <input type="password" class="password-input" id="passwordInput" placeholder="输入密码" maxlength="20">
-            <div class="error-msg" id="passwordError">密码错误，请重试</div>
-            <button class="btn btn-primary" onclick="verifyPassword()" style="width: 100%;">进入记账工具</button>
+            <div class="modal-title">请登录</div>
+            <div class="modal-desc">此记账工具受密码保护<br>请输入用户名和密码</div>
+            <input type="text" class="password-input" id="usernameInput" placeholder="用户名" maxlength="20" style="margin-bottom: 12px;">
+            <input type="password" class="password-input" id="passwordInput" placeholder="密码" maxlength="20">
+            <div class="error-msg" id="passwordError">用户名或密码错误，请重试</div>
+            <button class="btn btn-primary" onclick="verifyLogin()" style="width: 100%;">进入记账工具</button>
         </div>
     </div>
 
@@ -602,7 +603,8 @@
 
     <script>
         // ==================== 配置 ====================
-        // 访问密码 - 修改这里设置你的密码
+        // 访问账号密码 - 修改这里设置你的账号密码
+        const ACCESS_USERNAME = 'wayen';
         const ACCESS_PASSWORD = '1234';
         
         // Upstash Redis 配置
@@ -774,11 +776,12 @@
         }
         
         // ==================== 密码验证 ====================
-        function verifyPassword() {
-            const input = document.getElementById('passwordInput').value;
+        function verifyLogin() {
+            const usernameInput = document.getElementById('usernameInput').value.trim();
+            const passwordInput = document.getElementById('passwordInput').value;
             const errorEl = document.getElementById('passwordError');
             
-            if (input === ACCESS_PASSWORD) {
+            if (usernameInput === ACCESS_USERNAME && passwordInput === ACCESS_PASSWORD) {
                 isAuthenticated = true;
                 document.getElementById('passwordModal').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
@@ -789,9 +792,12 @@
             }
         }
         
-        // 回车提交密码
+        // 回车提交登录
+        document.getElementById('usernameInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verifyLogin();
+        });
         document.getElementById('passwordInput')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') verifyPassword();
+            if (e.key === 'Enter') verifyLogin();
         });
         
         // ==================== 应用初始化 ====================
