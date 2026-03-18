@@ -612,41 +612,64 @@
         
         // ==================== 分类数据 ====================
         const categoryData = {
-            "交通": ["停车", "出租车", "加油", "洗车"],
-            "医疗": ["药品"],
-            "娱乐": ["付费会员", "游乐场"],
-            "宠物": ["狗"],
-            "恰饭": ["午餐", "夜宵", "早餐", "晚餐", "零食"],
-            "日常": ["家政", "电费", "租金"],
-            "社交": ["亲友"],
-            "购物": ["快递", "杂物", "烟"],
-            "饮品": ["咖啡", "饮料"]
+            "火车": ["高铁", "动车", "普快", "地铁", "磁悬浮"],
+            "交通": ["停车", "出租车", "加油", "洗车", "公交", "机票"],
+            "医疗": ["药品", "挂号", "检查", "住院"],
+            "娱乐": ["付费会员", "游乐场", "电影", "KTV", "游戏"],
+            "宠物": ["狗粮", "猫粮", "宠物医院", "宠物用品"],
+            "恰饭": ["午餐", "夜宵", "早餐", "晚餐", "零食", "聚餐"],
+            "日常": ["家政", "电费", "水费", "燃气费", "租金", "物业费"],
+            "社交": ["亲友", "送礼", "红包", "请客", "婚礼"],
+            "购物": ["快递", "杂物", "衣服", "鞋子", "化妆品", "电子产品"],
+            "饮品": ["咖啡", "饮料", "奶茶", "果汁", "酒类"]
         };
         
         // 智能匹配规则
         const smartMatchRules = [
+            // 火车
+            { keywords: ["高铁", "动车", "火车票", "铁路", "12306"], category: "火车", subcategory: "高铁" },
+            { keywords: ["地铁", "轨道交通", "地铁卡"], category: "火车", subcategory: "地铁" },
+            // 交通
             { keywords: ["停车", "停车费", "公司停车"], category: "交通", subcategory: "停车" },
             { keywords: ["打车", "出租车", "滴滴", "uber"], category: "交通", subcategory: "出租车" },
-            { keywords: ["加油", "油费", "汽油"], category: "交通", subcategory: "加油" },
-            { keywords: ["洗车"], category: "交通", subcategory: "洗车" },
-            { keywords: ["药", "药品", "看病", "医院"], category: "医疗", subcategory: "药品" },
-            { keywords: ["会员", "icloud", "会员费"], category: "娱乐", subcategory: "付费会员" },
-            { keywords: ["游乐场", "迪士尼", "欢乐谷"], category: "娱乐", subcategory: "游乐场" },
-            { keywords: ["狗", "狗粮", "宠物"], category: "宠物", subcategory: "狗" },
-            { keywords: ["午饭", "午餐"], category: "恰饭", subcategory: "午餐" },
-            { keywords: ["夜宵", "宵夜", "烧烤", "串串"], category: "恰饭", subcategory: "夜宵" },
-            { keywords: ["早饭", "早餐", "包子", "煎饼", "鸡蛋"], category: "恰饭", subcategory: "早餐" },
-            { keywords: ["晚饭", "晚餐", "海金滋", "小笼"], category: "恰饭", subcategory: "晚餐" },
-            { keywords: ["零食", "酸奶", "薯片", "巧克力", "糖果"], category: "恰饭", subcategory: "零食" },
-            { keywords: ["阿姨", "家政", "保洁", "打扫"], category: "日常", subcategory: "家政" },
-            { keywords: ["电费", "电"], category: "日常", subcategory: "电费" },
-            { keywords: ["房租", "租金"], category: "日常", subcategory: "租金" },
-            { keywords: ["朋友", "亲友", "送礼", "红包"], category: "社交", subcategory: "亲友" },
-            { keywords: ["快递", "运费", "邮费"], category: "购物", subcategory: "快递" },
-            { keywords: ["乐高", "杂物", "日用品"], category: "购物", subcategory: "杂物" },
-            { keywords: ["烟", "香烟", "买烟"], category: "购物", subcategory: "烟" },
-            { keywords: ["咖啡", "星巴克", "瑞幸"], category: "饮品", subcategory: "咖啡" },
-            { keywords: ["饮料", "奶茶", "果汁", "可乐"], category: "饮品", subcategory: "饮料" }
+            { keywords: ["加油", "油费", "汽油", "柴油"], category: "交通", subcategory: "加油" },
+            { keywords: ["洗车", "汽车美容"], category: "交通", subcategory: "洗车" },
+            { keywords: ["公交", "公交车", "巴士"], category: "交通", subcategory: "公交" },
+            { keywords: ["机票", "飞机", "航班", "机场"], category: "交通", subcategory: "机票" },
+            // 医疗
+            { keywords: ["药", "药品", "买药", "药店"], category: "医疗", subcategory: "药品" },
+            { keywords: ["看病", "医院", "挂号", "门诊"], category: "医疗", subcategory: "挂号" },
+            { keywords: ["检查", "化验", "CT", "B超", "核磁"], category: "医疗", subcategory: "检查" },
+            // 娱乐
+            { keywords: ["会员", "icloud", "会员费", "订阅", "续费"], category: "娱乐", subcategory: "付费会员" },
+            { keywords: ["游乐场", "迪士尼", "欢乐谷", "动物园"], category: "娱乐", subcategory: "游乐场" },
+            { keywords: ["电影", "电影院", "IMAX", "电影票"], category: "娱乐", subcategory: "电影" },
+            // 宠物
+            { keywords: ["狗", "狗狗", "狗粮", "遛狗"], category: "宠物", subcategory: "狗粮" },
+            { keywords: ["猫", "猫咪", "猫粮", "铲屎"], category: "宠物", subcategory: "猫粮" },
+            // 餐饮
+            { keywords: ["午饭", "午餐", "中饭"], category: "恰饭", subcategory: "午餐" },
+            { keywords: ["夜宵", "宵夜", "烧烤", "串串", "小龙虾"], category: "恰饭", subcategory: "夜宵" },
+            { keywords: ["早饭", "早餐", "包子", "煎饼", "鸡蛋", "豆浆"], category: "恰饭", subcategory: "早餐" },
+            { keywords: ["晚饭", "晚餐", "火锅", "烤肉", "日料"], category: "恰饭", subcategory: "晚餐" },
+            { keywords: ["零食", "酸奶", "薯片", "巧克力", "糖果", "坚果"], category: "恰饭", subcategory: "零食" },
+            // 日常
+            { keywords: ["阿姨", "家政", "保洁", "打扫", "钟点工"], category: "日常", subcategory: "家政" },
+            { keywords: ["电费", "电", "电费充值"], category: "日常", subcategory: "电费" },
+            { keywords: ["水费", "自来水"], category: "日常", subcategory: "水费" },
+            { keywords: ["燃气费", "天然气", "煤气"], category: "日常", subcategory: "燃气费" },
+            { keywords: ["房租", "租金", "月租"], category: "日常", subcategory: "租金" },
+            // 社交
+            { keywords: ["朋友", "亲友", "送礼", "礼物", "伴手礼"], category: "社交", subcategory: "亲友" },
+            { keywords: ["红包", "压岁钱", "份子钱"], category: "社交", subcategory: "红包" },
+            // 购物
+            { keywords: ["快递", "运费", "邮费", "顺丰", "菜鸟"], category: "购物", subcategory: "快递" },
+            { keywords: ["乐高", "杂物", "日用品", "收纳"], category: "购物", subcategory: "杂物" },
+            { keywords: ["烟", "香烟", "买烟", "电子烟"], category: "购物", subcategory: "烟" },
+            // 饮品
+            { keywords: ["咖啡", "星巴克", "瑞幸", "美式", "拿铁"], category: "饮品", subcategory: "咖啡" },
+            { keywords: ["奶茶", "喜茶", "奈雪", "一点点", "coco"], category: "饮品", subcategory: "奶茶" },
+            { keywords: ["饮料", "果汁", "可乐", "汽水", "茶饮"], category: "饮品", subcategory: "饮料" }
         ];
         
         // ==================== 数据存储 ====================
@@ -656,18 +679,32 @@
         
         // 预设常用标签
         const presetTags = [
-            "停车", "打车", "滴滴", "加油", "洗车",
-            "早餐", "午餐", "晚餐", "夜宵", "零食", 
-            "咖啡", "奶茶", "饮料",
-            "地铁", "公交", "高铁", "机票",
-            "超市", "便利店", "水果", "买菜",
-            "电影", "游戏", "会员", "订阅",
-            "衣服", "鞋子", "化妆品", "电子产品",
-            "房租", "水电", "宽带", "话费",
-            "医院", "药店", "体检",
-            "礼物", "红包", "聚餐", "约会",
-            "宠物", "猫", "狗",
-            "运动", "健身", "理发", "快递"
+            // 火车交通
+            "高铁", "动车", "火车票", "地铁", "磁悬浮", "轻轨",
+            // 其他交通
+            "停车", "打车", "滴滴", "出租车", "加油", "洗车", "公交", "机票", "机场",
+            // 餐饮
+            "早餐", "午餐", "晚餐", "夜宵", "零食", "聚餐", "外卖", "火锅", "烧烤",
+            // 饮品
+            "咖啡", "奶茶", "饮料", "果汁", "星巴克", "瑞幸", "喜茶", "奈雪",
+            // 购物消费
+            "超市", "便利店", "水果", "买菜", "盒马", "山姆", "Costco",
+            "衣服", "鞋子", "化妆品", "护肤品", "电子产品", "手机", "电脑",
+            // 娱乐
+            "电影", "游戏", "会员", "订阅", "Netflix", "Spotify", "B站", "爱奇艺",
+            "KTV", "剧本杀", "密室", "桌游",
+            // 居住费用
+            "房租", "水电", "电费", "水费", "燃气费", "宽带", "话费", "物业费",
+            // 医疗健康
+            "医院", "药店", "体检", "挂号", "检查", "牙医", "眼科",
+            // 社交人情
+            "礼物", "红包", "聚餐", "约会", "请客", "婚礼", "份子钱",
+            // 宠物
+            "宠物", "猫粮", "狗粮", "宠物医院", "宠物美容",
+            // 个人护理
+            "运动", "健身", "理发", "美容", "美甲", "按摩", "SPA",
+            // 其他
+            "快递", "运费", "书籍", "学习", "课程", "考试"
         ];
         
         // ==================== Upstash API ====================
