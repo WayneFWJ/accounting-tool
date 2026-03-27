@@ -746,8 +746,21 @@
                 updateSyncStatus('synced', '✅ 已同步');
                 return true;
             } catch (error) {
-                updateSyncStatus('error', '❌ 同步失败');
+                updateSyncStatus('error', '❌ 云端同步失败');
                 console.error('Load error:', error);
+                // 尝试从本地备份恢复
+                try {
+                    const backup = localStorage.getItem('accountRecords_backup');
+                    if (backup) {
+                        records = JSON.parse(backup);
+                        console.log('Loaded from local backup:', records.length, 'records');
+                        updateSyncStatus('synced', '✅ 已从本地恢复');
+                        return true;
+                    }
+                } catch (localError) {
+                    console.error('Local backup load failed:', localError);
+                }
+                records = [];
                 return false;
             }
         }
@@ -759,12 +772,21 @@
                 const result = await upstashRequest('SET', DATA_KEY, data);
                 if (result.result === 'OK') {
                     updateSyncStatus('synced', '✅ 已保存');
+                    // 同时备份到本地
+                    localStorage.setItem('accountRecords_backup', data);
                     return true;
                 }
                 throw new Error('Save failed');
             } catch (error) {
-                updateSyncStatus('error', '❌ 保存失败');
+                updateSyncStatus('error', '❌ 云端保存失败，已备份本地');
                 console.error('Save error:', error);
+                // 云端失败时，保存到本地
+                try {
+                    localStorage.setItem('accountRecords_backup', JSON.stringify(records));
+                    console.log('Saved to local backup');
+                } catch (localError) {
+                    console.error('Local backup also failed:', localError);
+                }
                 return false;
             }
         }
